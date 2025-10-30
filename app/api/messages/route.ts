@@ -1,6 +1,17 @@
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export async function GET(req: Request) {
+  // Check if Supabase is available
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: "Database service unavailable" }),
+      { status: 503 }
+    );
+  }
+
   const chatId = req.url.split("/").pop();
 
   const { data, error } = await supabase
@@ -17,6 +28,17 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  // Check if Supabase is available
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: "Database service unavailable" }),
+      { status: 503 }
+    );
+  }
+
   const { chatId, senderId, message } = await req.json();
 
   const { data, error } = await supabase

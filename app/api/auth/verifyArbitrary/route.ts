@@ -2,10 +2,21 @@ import jwt from "jsonwebtoken";
 import { PublicKey } from "@solana/web3.js";
 import nacl from "tweetnacl";
 import bs58 from "bs58";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export async function POST(req: Request) {
   try {
+    // Check if Supabase is available
+    let supabase;
+    try {
+      supabase = getSupabaseClient();
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: "Database service unavailable" }),
+        { status: 503 }
+      );
+    }
+
     const { nonce, signature, address } = await req.json();
 
     // Validate Solana address

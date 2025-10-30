@@ -1,9 +1,20 @@
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 import { v4 as uuidv4 } from "uuid";
 import { PublicKey } from "@solana/web3.js";
 
 export async function POST(req: Request) {
   try {
+    // Check if Supabase is available
+    let supabase;
+    try {
+      supabase = getSupabaseClient();
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: "Database service unavailable" }),
+        { status: 503 }
+      );
+    }
+
     const { address } = await req.json();
 
     // Validate the Solana wallet address format

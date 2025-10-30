@@ -1,6 +1,14 @@
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export async function getMessages(chatId: number) {
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    console.error("Database service unavailable:", error);
+    return [];
+  }
+
   const { data, error } = await supabase
     .from("messages")
     .select("*")
@@ -16,6 +24,14 @@ export async function getMessages(chatId: number) {
 }
 
 export async function sendMessageToDB(chatId: number, senderId: number, message: object) {
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    console.error("Database service unavailable:", error);
+    return error;
+  }
+
   const { data, error } = await supabase
     .from("messages")
     .insert([{ chat_id: chatId, sender_id: senderId, message }]);
@@ -29,6 +45,14 @@ export async function sendMessageToDB(chatId: number, senderId: number, message:
 }
 
 export async function getSolanaAddress(solanaAddress: string): Promise<any> {
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    console.error("Database service unavailable:", error);
+    return { data: null, error };
+  }
+
   const { data, error } = await supabase
     .from("users")
     .select("wallet_address, is_whitelisted")
@@ -47,6 +71,14 @@ export async function createSolanaIfNotExists(
   solanaAddress: string,
   referralCode?: string
 ): Promise<any> {
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    console.error("Database service unavailable:", error);
+    return { data: null, error };
+  }
+
   const { data: existingSolana, error: existingSolanaError } = await supabase
     .from("users")
     .select("wallet_address")

@@ -1,6 +1,16 @@
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export async function GET(req: Request) {
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: "Database service unavailable" }),
+      { status: 503 }
+    );
+  }
+
   const walletAddress = req.headers.get("solanaAddress") || req.headers.get("injectiveAddress");
   if (!walletAddress) {
     return new Response(JSON.stringify({ error: "Missing wallet address" }), { status: 400 });
@@ -29,6 +39,16 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    let supabase;
+    try {
+      supabase = getSupabaseClient();
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: "Database service unavailable" }),
+        { status: 503 }
+      );
+    }
+
     const body = await req.json();
     console.log("📥 POST /api/chats received body:", JSON.stringify(body, null, 2));
     

@@ -1,7 +1,17 @@
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 // Get chat messages
 export async function GET(req: Request, { params }: { params: Promise<{ chatId: string }> }) {
+  let supabase;
+  try {
+    supabase = getSupabaseClient();
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: "Database service unavailable" }),
+      { status: 503 }
+    );
+  }
+
   const chatId = (await params).chatId;
 
   const { data, error } = await supabase.from("messages").select("*").eq("chat_id", chatId);
@@ -16,6 +26,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ chatId: 
 // Delete chat and all its messages
 export async function DELETE(req: Request, { params }: { params: Promise<{ chatId: string }> }) {
   try {
+    let supabase;
+    try {
+      supabase = getSupabaseClient();
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: "Database service unavailable" }),
+        { status: 503 }
+      );
+    }
+
     const chatId = (await params).chatId;
 
     // First delete all messages for this chat
