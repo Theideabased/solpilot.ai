@@ -34,13 +34,29 @@ export async function transferFunds(
         );
         return;
       }
+      // Type assertion is safe here because status is "success"
+      const successData = transactionData as {
+        amount: number;
+        token: { symbol: any; name: any; address: any; decimals: any; tokenType: string; denom: any; };
+        receiver: string;
+        status: string;
+      };
       addToChat(
         createChatMessage({
           sender: "ai",
-          text: ` You want to send  ${transactionData.amount} ${transactionData.token.symbol} to ${transactionData.receiver}. Are you confirming this transaction ?`,
+          text: ` You want to send  ${successData.amount} ${successData.token.symbol} to ${successData.receiver}. Are you confirming this transaction ?`,
           type: "send_token",
           intent: intent,
-          send: transactionData,
+          send: {
+            token: {
+              tokenType: successData.token.tokenType,
+              address: successData.token.address,
+              decimals: successData.token.decimals,
+              denom: successData.token.denom,
+            },
+            receiver: successData.receiver,
+            amount: successData.amount,
+          },
         })
       );
       return;

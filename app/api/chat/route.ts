@@ -52,14 +52,31 @@ export async function POST(req: Request) {
           });
         }
 
+        // Type assertion is safe here because status is "success"
+        const successData = transactionData as {
+          amount: number;
+          token: { symbol: any; name: any; address: any; decimals: any; tokenType: string; denom: any; };
+          receiver: string;
+          status: string;
+        };
+
         return NextResponse.json({
           messages: [
             createChatMessage({
               sender: "ai",
-              text: `You want to send ${transactionData.amount} ${transactionData.token.symbol} to ${transactionData.receiver}. Please confirm this transaction.`,
+              text: `You want to send ${successData.amount} ${successData.token.symbol} to ${successData.receiver}. Please confirm this transaction.`,
               type: "send_token",
               intent: "transfer",
-              send: transactionData,
+              send: {
+                token: {
+                  tokenType: successData.token.tokenType,
+                  address: successData.token.address,
+                  decimals: successData.token.decimals,
+                  denom: successData.token.denom,
+                },
+                receiver: successData.receiver,
+                amount: successData.amount,
+              },
             }),
           ],
         });
