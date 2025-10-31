@@ -3,6 +3,17 @@ import bs58 from "bs58";
 
 export type SolanaWalletType = "phantom" | "solflare";
 
+export function checkWalletAvailability(): { phantom: boolean; solflare: boolean; anyAvailable: boolean } {
+  const phantom = "phantom" in window && window.phantom?.solana?.isPhantom;
+  const solflare = "solflare" in window && window.solflare?.isSolflare;
+  
+  return {
+    phantom: Boolean(phantom),
+    solflare: Boolean(solflare),
+    anyAvailable: Boolean(phantom || solflare)
+  };
+}
+
 export async function connectToSolanaWallet(walletType: "phantom" | "solflare" = "phantom") {
   console.log(`🔌 Starting connection to ${walletType}...`);
   
@@ -72,7 +83,7 @@ function getProvider(walletType: SolanaWalletType) {
         return provider;
       }
     }
-    throw new Error("Phantom wallet is not installed! Please visit https://phantom.app/");
+    throw new Error("Phantom wallet is not installed! Please install Phantom wallet to continue. Visit https://phantom.app/");
   } else {
     if ("solflare" in window) {
       const provider = window.solflare;
@@ -80,7 +91,7 @@ function getProvider(walletType: SolanaWalletType) {
         return provider;
       }
     }
-    throw new Error("Solflare wallet is not installed! Please visit https://solflare.com/");
+    throw new Error("Solflare wallet is not installed! Please install Solflare wallet to continue. Visit https://solflare.com/");
   }
 }
 

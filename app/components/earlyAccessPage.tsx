@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { connectToSolanaWallet, type SolanaWalletType } from "@/wallet/solanaWalletConnection";
+import { connectToSolanaWallet, checkWalletAvailability, type SolanaWalletType } from "@/wallet/solanaWalletConnection";
 import { ToastContainer, toast } from "react-toastify";
 
 import { Loader2, Wallet as WalletIcon } from "lucide-react";
@@ -54,6 +54,26 @@ const EarlyAccessPage = ({
     }
   }, [solanaAddress, checkIsWhitelisted]);
 
+  // Check wallet availability on component mount
+  useEffect(() => {
+    const { anyAvailable, phantom, solflare } = checkWalletAvailability();
+    
+    if (!anyAvailable) {
+      setTimeout(() => {
+        toast.info("No Solana wallet detected! Please install Phantom or Solflare wallet to connect.", {
+          position: "top-right",
+          autoClose: 8000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }, 1000); // Delay to avoid showing immediately on page load
+    }
+  }, []);
+
   const handleConnectWallet = async (walletType: SolanaWalletType) => {
     try {
       setIsLoading(true);
@@ -79,9 +99,24 @@ const EarlyAccessPage = ({
       }
     } catch (error) {
       console.error("Error connecting wallet:", error);
-      toast.error("Login failed.", {
+      
+      // Check if the error is about wallet not being installed
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      let toastMessage = "Login failed.";
+      if (errorMessage.includes("Phantom wallet is not installed")) {
+        toastMessage = "Phantom wallet not detected! Please install Phantom wallet from https://phantom.app/";
+      } else if (errorMessage.includes("Solflare wallet is not installed")) {
+        toastMessage = "Solflare wallet not detected! Please install Solflare wallet from https://solflare.com/";
+      } else if (errorMessage.includes("not installed")) {
+        toastMessage = "No Solana wallet detected! Please install a wallet like Phantom or Solflare to continue.";
+      } else if (errorMessage.includes("User rejected")) {
+        toastMessage = "Wallet connection was cancelled. Please try again and approve the connection.";
+      }
+      
+      toast.error(toastMessage, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000, // Longer duration for wallet installation messages
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -210,22 +245,70 @@ const EarlyAccessPage = ({
                 </div>
               ) : (
                 <div className="grid gap-3">
-                  <Button
-                    variant="outline"
-                    className="w-full border-zinc-800 hover:bg-zinc-800 hover:text-zinc-100 bg-transparent "
-                    onClick={() => handleConnectWallet("phantom")}
-                  >
-                    <WalletIcon className="mr-2 h-4 w-4" />
-                    Connect with Phantom
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full border-zinc-800 hover:bg-zinc-800 hover:text-zinc-100 bg-transparent"
-                    onClick={() => handleConnectWallet("solflare")}
-                  >
-                    <WalletIcon className="mr-2 h-4 w-4" />
-                    Connect with Solflare
-                  </Button>
+                  {(() => {
+                    const { phantom, solflare, anyAvailable } = checkWalletAvailability();
+                    
+                    if (!anyAvailable) {
+                      return (
+                        <div className="text-center space-y-3">
+                          <p className="text-sm text-zinc-400">No Solana wallet detected</p>
+                          <div className="space-y-2">
+                            <a 
+                              href="https://phantom.app/" 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="block w-full"
+                            >
+                              <Button
+                                variant="outline"
+                                className="w-full border-zinc-600 hover:bg-zinc-700 hover:text-zinc-100 bg-zinc-800"
+                              >
+                                <WalletIcon className="mr-2 h-4 w-4" />
+                                Install Phantom Wallet
+                              </Button>
+                            </a>
+                            <a 
+                              href="https://solflare.com/" 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="block w-full"
+                            >
+                              <Button
+                                variant="outline"
+                                className="w-full border-zinc-600 hover:bg-zinc-700 hover:text-zinc-100 bg-zinc-800"
+                              >
+                                <WalletIcon className="mr-2 h-4 w-4" />
+                                Install Solflare Wallet
+                              </Button>
+                            </a>
+                          </div>
+                        </div>
+                      );
+                    }
+                    
+                    return (
+                      <>
+                        <Button
+                          variant="outline"
+                          className={`w-full border-zinc-800 hover:bg-zinc-800 hover:text-zinc-100 bg-transparent ${!phantom ? 'opacity-50' : ''}`}
+                          onClick={() => handleConnectWallet("phantom")}
+                          disabled={!phantom}
+                        >
+                          <WalletIcon className="mr-2 h-4 w-4" />
+                          {phantom ? 'Connect with Phantom' : 'Phantom Not Installed'}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className={`w-full border-zinc-800 hover:bg-zinc-800 hover:text-zinc-100 bg-transparent ${!solflare ? 'opacity-50' : ''}`}
+                          onClick={() => handleConnectWallet("solflare")}
+                          disabled={!solflare}
+                        >
+                          <WalletIcon className="mr-2 h-4 w-4" />
+                          {solflare ? 'Connect with Solflare' : 'Solflare Not Installed'}
+                        </Button>
+                      </>
+                    );
+                  })()}
                 </div>
               )}
             </>
