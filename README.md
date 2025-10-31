@@ -1,172 +1,168 @@
-# Jecta App
+# SolPilot AI - Intelligent Solana Portfolio Assistant
 
-Jecta is a Next.js-based AI Copilot application that integrates with Injective Blockchain and uses Supabase for data storage. This application allows users to interact with an AI Copilot that can perform various blockchain-related tasks like checking balances, staking, swapping tokens, and more.
+**Powered by Zerion API** 🚀
+
+SolPilot AI is an intelligent conversational assistant that transforms how users interact with their Solana portfolios. By leveraging the comprehensive Zerion API data stack, SolPilot provides real-time portfolio insights, transaction analysis, and intelligent trading recommendations through natural language conversations.
+
+**🔗 Live Demo**: [https://solpilot-ai.vercel.app/](https://solpilot-ai.vercel.app/)
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Injective](https://img.shields.io/badge/Injective-0052FF?style=for-the-badge&logo=injectiveprotocol&logoColor=white)
+![Solana](https://img.shields.io/badge/Solana-9945FF?style=for-the-badge&logo=solana&logoColor=white)
+![Zerion API](https://img.shields.io/badge/Powered_by-Zerion_API-4F46E5?style=for-the-badge)
 
-<img src="https://pbs.twimg.com/profile_images/1887520476555046912/wxXggXte_400x400.jpg" alt="Jecta" width="100" height="100">
+## 🎯 Problem & Solution
 
-## Features
+**Problem**: Managing Solana portfolios is complex - users struggle to understand their holdings, track performance, and make informed trading decisions across multiple tokens and DeFi protocols.
 
-- AI-powered Copilot interface
-- Blockchain wallet integration (Leap, Keplr)
-- User authentication via wallet signatures
-- Chat history storage and retrieval
-- Token balance checking
-- Validator staking functionality
-- Unstaking functionality
-- DefiLlama integration for TVL informations of the ecosystem
-- Token swapping capabilities
-- Token sending functionality
-- Portfolio management
-- Portfolio analysis
-- Transaction search & AI-powered analysis
-- Search latest Injective news with Venice API
-- Token analysis using Sonia
-- Injective burn auction tools (get & place bid auction)
+**Solution**: SolPilot AI acts as your personal crypto portfolio assistant, using **Zerion API's comprehensive onchain data** to provide:
+- Real-time portfolio analysis and PnL tracking
+- Intelligent transaction insights and history
+- Natural language token discovery and market data
+- Automated trading suggestions based on wallet activity
 
-## Tech Stack
+## 🚀 Key Features Powered by Zerion API
 
-- **Frontend**: Next.js 15, React 18, TypeScript, Tailwind CSS, Shadcn UI
-- **Backend**: Next.js API Routes
-- **Database**: PostgreSQL via Supabase
-- **Authentication**: JWT with wallet signature verification
-- **Blockchain Integration**: Injective Typescript SDK, Cosmos SDK
-- **AI Integration**: OpenRouter API
+### 📊 Real-time Portfolio Intelligence
+- **Live balance tracking** across all Solana tokens using Zerion's portfolio data
+- **PnL analysis** with profit/loss calculations and performance metrics
+- **Portfolio visualization** with interactive charts and breakdowns
 
-## Prerequisites
+### 🔍 Transaction Analysis & History
+- **Decoded transaction history** using Zerion's comprehensive transaction API
+- **AI-powered transaction insights** that explain complex DeFi interactions
+- **Smart categorization** of swaps, transfers, and protocol interactions
 
-- Node.js 18+ and npm/yarn/pnpm
-- Supabase account
-- OpenRouter API key (for AI functionality)
-- Basic knowledge of blockchain concepts
+### 📈 Market Data & Discovery
+- **Real-time price charts** and token metadata via Zerion API
+- **Token discovery** with AI recommendations based on portfolio patterns
+- **Market trend analysis** integrated into conversational responses
 
-## Getting Started
+### 🤖 Conversational AI Interface
+- Natural language queries like "Show me my portfolio performance" or "What tokens should I buy?"
+- Intelligent responses combining Zerion data with AI analysis
+- Contextual recommendations based on user's actual holdings and activity
 
-### 1. Clone the repository
+## 🛠 How SolPilot Leverages Zerion API
 
-```bash
-git clone https://github.com/Jecta-ai/jecta-app
-cd jecta-app
+### Portfolio & Balance Integration
+```typescript
+// Real-time portfolio data from Zerion API
+const portfolioData = await zerionAPI.getPortfolio(walletAddress);
+const balances = await zerionAPI.getBalances(walletAddress);
 ```
 
-### 2. Install dependencies
+### Transaction Analysis
+```typescript
+// Comprehensive transaction history and analysis
+const transactions = await zerionAPI.getTransactions(walletAddress);
+const decodedTx = await zerionAPI.decodeTransaction(txHash);
+```
+
+### Market Data & Charts
+```typescript
+// Token information and price data
+const tokenData = await zerionAPI.getTokenInfo(tokenAddress);
+const priceChart = await zerionAPI.getTokenChart(tokenAddress);
+```
+
+## 🎨 User Experience
+
+SolPilot AI provides an intuitive chat interface where users can:
+
+1. **Connect their Solana wallet** (Phantom, Solflare, etc.)
+2. **Ask natural language questions** about their portfolio
+3. **Receive intelligent insights** powered by real Zerion data
+4. **Get trading recommendations** based on their actual holdings
+5. **Track performance** with beautiful visualizations
+
+### Example Conversations:
+- *"How is my portfolio performing today?"* → Real-time PnL analysis
+- *"What's the history of my SOL transactions?"* → Decoded transaction timeline
+- *"Should I buy more BONK?"* → AI analysis with market data
+- *"Show me my biggest winners"* → Portfolio performance breakdown
+
+## 🏗 Technical Architecture
+
+- **Frontend**: Next.js 15 with TypeScript and Tailwind CSS
+- **AI Engine**: OpenRouter API with GPT-4 for intelligent responses
+- **Data Source**: **Zerion API** for all onchain data (portfolios, transactions, market data)
+- **Wallet Integration**: Solana wallet adapters for seamless connection
+- **Database**: Supabase for user sessions and chat history
+
+## 🎯 Target Users
+
+- **Crypto beginners** who need guidance understanding their Solana holdings
+- **Active traders** wanting quick portfolio insights and market analysis
+- **DeFi users** seeking to understand complex transaction histories
+- **Portfolio managers** needing comprehensive tracking across multiple protocols
+
+## 🏆 Innovation & Impact
+
+**Innovation**: First conversational AI that combines Zerion's comprehensive Solana data with intelligent analysis, making portfolio management accessible through natural language.
+
+**Impact**: Democratizes access to sophisticated portfolio analytics, helping users make informed decisions regardless of their technical expertise.
+
+**User Adoption Potential**: Addresses the universal need for better portfolio understanding in the growing Solana ecosystem.
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Zerion API key ([Get yours here](https://zerion-io.typeform.com/to/QI3GRa7t?utm_source=cypherpunk))
+- Solana wallet (Phantom, Solflare, etc.)
+
+### Installation
 
 ```bash
+git clone https://github.com/Theideabased/solpilot.ai
+cd solpilot.ai
 npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
-### 3. Set up environment variables
-
-Copy the `.env.example` file to `.env.local` and fill in the required values:
+### Environment Setup
 
 ```bash
-cp .env.example .env.local
+# Zerion API Configuration
+ZERION_API_KEY=your_zerion_api_key
+
+# AI Configuration  
+OPENROUTER_API_KEY=your_openrouter_key
+MODEL=openai/gpt-4o-mini
+
+# Solana Configuration
+NEXT_PUBLIC_SOLANA_RPC=https://api.mainnet-beta.solana.com
+
+# Database (Supabase)
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
 ```
 
-Required environment variables:
-
-- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
-- `SUPABASE_JWT_SECRET`: Secret key for JWT token generation
-- `OPENROUTER_API_KEY`: API key for OpenRouter
-- `OPENROUTER_BASE_URL`: Base URL for OpenRouter API
-- `MODEL`: AI model to use
-- `BEARER_TOKEN`: Bearer token for API authentication
-- `MAX_POSTS`: Maximum number of posts to retrieve
-
-### 4. Database Setup
-
-You need to set up the following tables in your Supabase PostgreSQL database:
-
-#### Users Table
-
-```sql
-CREATE TABLE users (
-  id UUID PRIMARY KEY,
-  wallet_address TEXT UNIQUE NOT NULL,
-  nonce UUID
-);
-```
-
-#### Chats Table
-
-```sql
-CREATE TABLE chats (
-  id UUID PRIMARY KEY,
-  ai_id UUID,
-  user_id UUID REFERENCES users(id),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  title TEXT
-);
-```
-
-#### Messages Table
-
-```sql
-CREATE TABLE messages (
-  id UUID PRIMARY KEY,
-  chat_id UUID REFERENCES chats(id),
-  sender_id UUID REFERENCES users(id),
-  message JSONB NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
-
-### 5. Run the development server
+### Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+Visit `http://localhost:3000` to start using SolPilot AI!
 
-## Deployment
+## 🏆 Hackathon Submission
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Track**: Zerion API Consumer Application  
+**Team**: SolPilot AI  
+**Country**: Nigeria 🇳🇬  
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Zerion API Utilization
+- ✅ Real-time Portfolio & PnL data
+- ✅ Transaction history and decoding
+- ✅ Market data and token information
+- ✅ Comprehensive Solana ecosystem coverage
 
-## Project Structure
+### Demo Video
+[Coming Soon - 5-minute showcase of SolPilot AI features]
 
-- `/app`: Main application code
-  - `/api`: API routes for backend functionality
-  - `/components`: React components
-  - `/providers`: Context providers
-  - `/services`: Service functions for API calls
-- `/lib`: Utility libraries
-- `/public`: Static assets
-- `/ai`: AI-related functionality
-- `/wallet`: Wallet integration code
+---
 
-## Contributing
+**Powered by Zerion API** - Transforming portfolio management through intelligent conversation and comprehensive onchain data.
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
-
-This means you are free to:
-
-- Share — copy and redistribute the material in any medium or format
-- Adapt — remix, transform, and build upon the material
-
-Under the following terms:
-
-- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
-- NonCommercial — You may not use the material for commercial purposes.
-
-See the LICENSE file for more details.
+Built with ❤️ for the Solana ecosystem during CypherPunk Hackathon 2024.
